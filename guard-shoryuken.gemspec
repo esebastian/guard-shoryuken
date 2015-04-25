@@ -1,19 +1,19 @@
 # -*- encoding: utf-8 -*-
 $:.push File.expand_path("../lib", __FILE__)
-require "guard/sidekiq/version"
+require "guard/shoryuken/version"
 
 Gem::Specification.new do |s|
-  s.name        = "guard-sidekiq"
-  s.version     = Guard::SidekiqVersion::STRING
+  s.name        = "guard-shoryuken"
+  s.version     = Guard::ShoryukenVersion::STRING
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Mark Bolusmjak", "pitr"]
-  s.email       = ["team@uken.com"]
-  s.homepage    = 'http://github.com/uken/guard-sidekiq'
-  s.summary     = %q{guard gem for sidekiq}
-  s.description = %q{Guard::Sidekiq automatically starts/stops/restarts sidekiq worker}
+  s.authors     = ["Mark Bolusmjak", "pitr", "Eduardo Sebastian"]
+  s.email       = ["esebastian@altiora.es"]
+  s.homepage    = 'http://github.com/esebastian/guard-shoryuken'
+  s.summary     = %q{guard gem for shoryuken}
+  s.description = %q{Guard::Shoryuken automatically starts/stops/restarts Shoryuken workers}
 
   s.add_dependency 'guard', '>= 2'
-  s.add_dependency 'sidekiq'
+  s.add_dependency 'shoryuken'
 
   s.add_development_dependency 'bundler'
   s.add_development_dependency 'rb-fsevent'

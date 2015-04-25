@@ -1,5 +1,5 @@
 module Guard
-  module SidekiqVersion
+  module ShoryukenVersion
     MAJOR = 0     # api
     MINOR = 1     # features
     PATCH = 0    # bug fixes
