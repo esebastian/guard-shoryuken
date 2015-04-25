@@ -1,5 +1,5 @@
 require 'rspec'
-require 'guard/sidekiq'
+require 'guard/shoryuken'
 
 ENV['GUARD_ENV'] = 'test'
 

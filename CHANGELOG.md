@@ -1,5 +1,12 @@
 ## 0.1.0
 
+* Forked from guard-sidekiq
+* Replace "sidekiq" with "shoryuken"
+
+-- guard-sidekiq --
+
+## 0.1.0
+
 * Support guard v2
 
 ## 0.0.11

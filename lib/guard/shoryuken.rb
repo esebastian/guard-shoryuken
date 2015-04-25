@@ -2,7 +2,7 @@ require 'guard'
 require 'timeout'
 
 module Guard
-  class Sidekiq < Plugin
+  class Shoryuken < Plugin
 
     DEFAULT_SIGNAL = :TERM
     DEFAULT_CONCURRENCY = 1
@@ -11,12 +11,12 @@ module Guard
     #  - :environment  e.g. 'test'
     #  - :queue e.g. 'default'
     #  - :timeout e.g. 5
-    #  - :config e.g. config/sidekiq.yml
+    #  - :config e.g. config/shoryuken.yml
     #  - :concurrency, e.g. 20
     #  - :verbose e.g. true
     #  - :stop_signal e.g. :TERM, :QUIT or :SIGQUIT
-    #  - :logfile e.g. log/sidekiq.log (defaults to STDOUT)
-    #  - :require e.g. ./sidekiq_helper.rb
+    #  - :logfile e.g. log/shoryuken.log (defaults to STDOUT)
+    #  - :require e.g. ./shoryuken_helper.rb
     def initialize(options = {})
       @options = options
       @pid = nil
@@ -28,37 +28,37 @@ module Guard
 
     def start
       stop
-      UI.info 'Starting up sidekiq...'
+      UI.info 'Starting up shoryuken...'
       UI.info cmd
 
-      # launch Sidekiq worker
+      # launch Shoryuken worker
       @pid = spawn({}, cmd)
     end
 
     def stop
       if @pid
-        UI.info 'Stopping sidekiq...'
+        UI.info 'Stopping shoryuken...'
         ::Process.kill @stop_signal, @pid
         begin
           Timeout.timeout(15) do
             ::Process.wait @pid
           end
         rescue Timeout::Error
-          UI.info 'Sending SIGKILL to sidekiq, as it\'s taking too long to shutdown.'
+          UI.info 'Sending SIGKILL to shoryuken, as it\'s taking too long to shutdown.'
           ::Process.kill :KILL, @pid
           ::Process.wait @pid
         end
-        UI.info 'Stopped process sidekiq'
+        UI.info 'Stopped process shoryuken'
       end
     rescue Errno::ESRCH
-      UI.info 'Guard::Sidekiq lost the Sidekiq worker subprocess!'
+      UI.info 'Guard::Shoryuken lost the Shoryuken worker subprocess!'
     ensure
       @pid = nil
     end
 
     # Called on Ctrl-Z signal
     def reload
-      UI.info 'Restarting sidekiq...'
+      UI.info 'Restarting shoryuken...'
       restart
     end
 
@@ -86,7 +86,7 @@ module Guard
     end
 
     def cmd
-      command = ['bundle exec sidekiq']
+      command = ['bundle exec shoryuken']
 
       command << "--logfile #{@options[:logfile]}"          if @options[:logfile]
       command << queue_params                               if @options[:queue]
