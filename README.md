@@ -1,6 +1,6 @@
 # Guard::Shoryuken
 
-[![Build Status](https://secure.travis-ci.org/esebastian/guard-shoryuken.png)](http://travis-ci.org/esebastian/guard-shoryuken)
+[![Build Status](https://secure.travis-ci.org/esebastian/guard-shoryuken.svg)](https://travis-ci.org/esebastian/guard-shoryuken)
 
 Guard::Shoryuken automatically starts/stops/restarts Shoryuken workers
 
