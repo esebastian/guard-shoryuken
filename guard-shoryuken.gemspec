@@ -13,6 +13,7 @@ Gem::Specification.new do |s|
   s.description = %q{Guard::Shoryuken automatically starts/stops/restarts Shoryuken workers}
 
   s.add_dependency 'guard', '>= 2'
+  s.add_dependency('guard-compat', '~> 1.0')
   s.add_dependency 'shoryuken'
 
   s.add_development_dependency 'bundler'
