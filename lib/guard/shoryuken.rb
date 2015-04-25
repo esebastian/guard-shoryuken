@@ -1,4 +1,4 @@
-require 'guard'
+require 'guard/compat/plugin'
 require 'timeout'
 
 module Guard
@@ -28,8 +28,8 @@ module Guard
 
     def start
       stop
-      UI.info 'Starting up shoryuken...'
-      UI.info cmd
+      Guard::Compat::UI.info 'Starting up shoryuken...'
+      Guard::Compat::UI.info cmd
 
       # launch Shoryuken worker
       @pid = spawn({}, cmd)
@@ -37,28 +37,28 @@ module Guard
 
     def stop
       if @pid
-        UI.info 'Stopping shoryuken...'
+        Guard::Compat::UI.info 'Stopping shoryuken...'
         ::Process.kill @stop_signal, @pid
         begin
           Timeout.timeout(15) do
             ::Process.wait @pid
           end
         rescue Timeout::Error
-          UI.info 'Sending SIGKILL to shoryuken, as it\'s taking too long to shutdown.'
+          Guard::Compat::UI.info 'Sending SIGKILL to shoryuken, as it\'s taking too long to shutdown.'
           ::Process.kill :KILL, @pid
           ::Process.wait @pid
         end
         UI.info 'Stopped process shoryuken'
       end
     rescue Errno::ESRCH
-      UI.info 'Guard::Shoryuken lost the Shoryuken worker subprocess!'
+      Guard::Compat::UI.info 'Guard::Shoryuken lost the Shoryuken worker subprocess!'
     ensure
       @pid = nil
     end
 
     # Called on Ctrl-Z signal
     def reload
-      UI.info 'Restarting shoryuken...'
+      Guard::Compat::UI.info 'Restarting shoryuken...'
       restart
     end
 
