@@ -12,11 +12,13 @@ Please be sure to have [Guard](http://github.com/guard/guard) installed before c
 
 Install the gem:
 
+    git clone 'https://github.com/tagloo/guard-shoryuken.git
+    cd guard-shoryuken && gem build guard-shoryuken.gemspec
     gem install guard-shoryuken
 
 Add it to your Gemfile (inside test group):
 
-    gem 'guard-shoryuken'
+    gem 'guard-shoryuken', :git => 'https://github.com/tagloo/guard-shoryuken.git'
 
 Add guard definition to your Guardfile by running this command:
 
