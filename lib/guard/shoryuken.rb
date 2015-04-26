@@ -5,23 +5,24 @@ module Guard
   class Shoryuken < Plugin
 
     DEFAULT_SIGNAL = :TERM
-    DEFAULT_CONCURRENCY = 1
+    DEFAULT_CONCURRENCY = 25
 
     # Allowable options are:
-    #  - :environment  e.g. 'test'
-    #  - :queue e.g. 'default'
-    #  - :timeout e.g. 5
-    #  - :config e.g. config/shoryuken.yml
-    #  - :concurrency, e.g. 20
-    #  - :verbose e.g. true
-    #  - :stop_signal e.g. :TERM, :QUIT or :SIGQUIT
-    #  - :logfile e.g. log/shoryuken.log (defaults to STDOUT)
-    #  - :require e.g. ./shoryuken_helper.rb
+    #  - :concurrency INT e.g. 10, processor threads to use
+    #  - :queue QUEUE[,WEIGHT]... e.g. 'my_queue,5' 'my_other_queue', queues to process with optional weights
+    #  - :require [PATH|DIR] e.g. 'workers/my_worker.rb' | 'app/workers', location of the worker
+    #  - :config [PATH] e.g. 'config/my_config.yml', path to YAML config file
+    #  - :rails BOOL e.g. true, attempts to load the containing Rails project
+    #  - :logfile PATH e.g. 'log/my_logfile.log', path to writable logfile
+    #  - :pidfile PATH e.g. 'my_pidfile.pid', path to pidfile
+    #  - :verbose BOOL e.g. true, print more verbose output
+    #  - :stop_signal SIGN e.g. :TERM, signal to send to stop the process
     def initialize(options = {})
       @options = options
       @pid = nil
       @stop_signal = options[:stop_signal] || DEFAULT_SIGNAL
       @options[:concurrency] ||= DEFAULT_CONCURRENCY
+      @options[:rails] = @options.fetch(:rails, false)
       @options[:verbose] = @options.fetch(:verbose, true)
       super
     end
@@ -88,13 +89,13 @@ module Guard
     def cmd
       command = ['bundle exec shoryuken']
 
-      command << "--logfile #{@options[:logfile]}"          if @options[:logfile]
-      command << queue_params                               if @options[:queue]
-      command << "-C #{@options[:config]}"                  if @options[:config]
       command << "--verbose"                                if @options[:verbose]
-      command << "--environment #{@options[:environment]}"  if @options[:environment]
-      command << "--timeout #{@options[:timeout]}"          if @options[:timeout]
+      command << "--pidfile #{@options[:pidfile]}"          if @options[:pidfile]
+      command << "--logfile #{@options[:logfile]}"          if @options[:logfile]
+      command << "--rails"                                  if @options[:rails]
+      command << "-C #{@options[:config]}"                  if @options[:config]
       command << "--require #{@options[:require]}"          if @options[:require]
+      command << queue_params                               if @options[:queue]
       command << "--concurrency #{@options[:concurrency]}"
 
       command.join(' ')
