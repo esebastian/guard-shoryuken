@@ -12,7 +12,7 @@ module Guard
     #  - :queue QUEUE[,WEIGHT]... e.g. 'my_queue,5' 'my_other_queue', queues to process with optional weights
     #  - :require [PATH|DIR] e.g. 'workers/my_worker.rb' | 'app/workers', location of the worker
     #  - :config [PATH] e.g. 'config/my_config.yml', path to YAML config file
-    #  - :rails BOOL e.g. true, attempts to load the containing Rails project
+    #  - :rails BOOL e.g. true, attempts to load the containing Rails project, implies :config => 'config/shoryuken.yml'
     #  - :logfile PATH e.g. 'log/my_logfile.log', path to writable logfile
     #  - :pidfile PATH e.g. 'my_pidfile.pid', path to pidfile
     #  - :verbose BOOL e.g. true, print more verbose output
@@ -92,7 +92,8 @@ module Guard
       command << "--verbose"                                if @options[:verbose]
       command << "--pidfile #{@options[:pidfile]}"          if @options[:pidfile]
       command << "--logfile #{@options[:logfile]}"          if @options[:logfile]
-      command << "--rails"                                  if @options[:rails]
+      command << "-R"                                       if @options[:rails] &&  @options[:config]
+      command << "-R -C config/shoryuken.yml"               if @options[:rails] && !@options[:config]
       command << "-C #{@options[:config]}"                  if @options[:config]
       command << "--require #{@options[:require]}"          if @options[:require]
       command << queue_params                               if @options[:queue]

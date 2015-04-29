@@ -4,7 +4,7 @@ require 'guard/compat/test/helper'
 describe Guard::Shoryuken, exclude_stubs: [Guard::Plugin] do
   describe 'start' do
 
-    it 'should accept :concurrency option' do
+    it 'accepts :concurrency option' do
       concurrency = 10
 
       obj = Guard::Shoryuken.new :concurrency => concurrency
@@ -27,21 +27,30 @@ describe Guard::Shoryuken, exclude_stubs: [Guard::Plugin] do
       end
     end
 
-    it 'should accept :require option' do
+    it 'accepts :require option' do
       obj = Guard::Shoryuken.new :require => './shoryuken_helper.rb'
       obj.send(:cmd).should include '--require ./shoryuken_helper.rb'
     end
 
-    it 'should accept :config option' do
+    it 'accepts :config option' do
       config = 'config/my_config.yml'
 
       obj = Guard::Shoryuken.new :config => config
       obj.send(:cmd).should include "-C #{config}"
     end
 
-    it 'should accept :rails option' do
+    it 'accepts :rails option, which implies :config option with default value' do
+      default_config = 'config/shoryuken.yml'
+
       obj = Guard::Shoryuken.new :rails => true
-      obj.send(:cmd).should include '--rails'
+      obj.send(:cmd).should include "-R -C #{default_config}"
+    end
+
+    it 'accepts :rails option and explicit :config option with custom value' do
+      config = 'config/my_config.yml'
+
+      obj = Guard::Shoryuken.new :rails => true, :config => config
+      obj.send(:cmd).should include "-R -C #{config}"
     end
 
     it 'accepts :logfile option' do
@@ -56,12 +65,12 @@ describe Guard::Shoryuken, exclude_stubs: [Guard::Plugin] do
       obj.send(:cmd).should include "--logfile #{logfile}"
     end
 
-    it 'should accept :verbose option' do
+    it 'accepts :verbose option' do
       obj = Guard::Shoryuken.new :verbose => true
       obj.send(:cmd).should include '--verbose'
     end
 
-    it 'should provide default options' do
+    it 'provides default options' do
       obj = Guard::Shoryuken.new
       obj.send(:cmd).should include "--concurrency #{Guard::Shoryuken::DEFAULT_CONCURRENCY}"
       obj.send(:cmd).should include '--verbose'
