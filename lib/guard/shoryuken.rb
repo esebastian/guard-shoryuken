@@ -7,6 +7,8 @@ module Guard
     DEFAULT_SIGNAL = :TERM
     DEFAULT_CONCURRENCY = 25
 
+    BASE_CMD = 'bundle exec shoryuken'
+
     # Allowable options are:
     #  - :concurrency INT e.g. 10, processor threads to use
     #  - :queue QUEUE[,WEIGHT]... e.g. 'my_queue,5' 'my_other_queue', queues to process with optional weights
@@ -21,9 +23,6 @@ module Guard
       @options = options
       @pid = nil
       @stop_signal = options[:stop_signal] || DEFAULT_SIGNAL
-      @options[:concurrency] ||= DEFAULT_CONCURRENCY
-      @options[:rails] = @options.fetch(:rails, false)
-      @options[:verbose] = @options.fetch(:verbose, true)
       super
     end
 
@@ -86,7 +85,13 @@ module Guard
       params.collect {|param| "--queue #{param}"}.join(" ")
     end
 
+    def default_cmd
+      "bundle exec shoryuken --concurrency #{DEFAULT_CONCURRENCY} --verbose"
+    end
+
     def cmd
+      return default_cmd if @options.empty?
+
       command = ['bundle exec shoryuken']
 
       command << "--verbose"                                if @options[:verbose]
@@ -97,7 +102,7 @@ module Guard
       command << "-C #{@options[:config]}"                  if @options[:config]
       command << "--require #{@options[:require]}"          if @options[:require]
       command << queue_params                               if @options[:queue]
-      command << "--concurrency #{@options[:concurrency]}"
+      command << "--concurrency #{@options[:concurrency]}"  if @options[:concurrency]
 
       command.join(' ')
     end
