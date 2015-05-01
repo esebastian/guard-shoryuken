@@ -11,7 +11,7 @@ describe Guard::Shoryuken, exclude_stubs: [Guard::Plugin] do
       obj.send(:cmd).should include "--concurrency #{concurrency}"
     end
 
-    describe 'with :queue option' do
+    context 'with :queue option' do
       it 'accepts one queue' do
         queue = :foo
 
@@ -32,35 +32,60 @@ describe Guard::Shoryuken, exclude_stubs: [Guard::Plugin] do
       obj.send(:cmd).should include '--require ./shoryuken_helper.rb'
     end
 
-    it 'accepts :config option' do
-      config = 'config/my_config.yml'
+    context 'with :config option' do
+      it 'accepts :config option' do
+        config = 'config/my_config.yml'
 
-      obj = Guard::Shoryuken.new :config => config
-      obj.send(:cmd).should include "-C #{config}"
+        obj = Guard::Shoryuken.new :config => config
+        obj.send(:cmd).should include "-C #{config}"
+      end
+
+      it 'does not provide default options' do
+        config = 'config/my_config.yml'
+
+        obj = Guard::Shoryuken.new :config => config
+        obj.send(:cmd).should_not include "--concurrency #{Guard::Shoryuken::DEFAULT_CONCURRENCY}"
+        obj.send(:cmd).should_not include '--verbose'
+      end
     end
 
-    it 'accepts :rails option, which implies :config option with default value' do
-      default_config = 'config/shoryuken.yml'
+    context 'with :rails option' do
+      it 'accepts :rails option' do
+        obj = Guard::Shoryuken.new :rails => true
+        obj.send(:cmd).should include "-R"
+      end
 
-      obj = Guard::Shoryuken.new :rails => true
-      obj.send(:cmd).should include "-R -C #{default_config}"
-    end
+      it 'implies :config option with default value for path' do
+        default_config = 'config/shoryuken.yml'
 
-    it 'accepts :rails option and explicit :config option with custom value' do
-      config = 'config/my_config.yml'
+        obj = Guard::Shoryuken.new :rails => true
+        obj.send(:cmd).should include "-R -C #{default_config}"
+      end
 
-      obj = Guard::Shoryuken.new :rails => true, :config => config
-      obj.send(:cmd).should include "-R -C #{config}"
+      it 'accepts explicit :config option with custom value' do
+        config = 'config/my_config.yml'
+
+        obj = Guard::Shoryuken.new :rails => true, :config => config
+        obj.send(:cmd).should include "-R -C #{config}"
+      end
+
+      it 'does not provide default options' do
+        obj = Guard::Shoryuken.new :rails => true
+        obj.send(:cmd).should_not include "--concurrency #{Guard::Shoryuken::DEFAULT_CONCURRENCY}"
+        obj.send(:cmd).should_not include '--verbose'
+      end
     end
 
     it 'accepts :logfile option' do
       logfile = 'log/my_logfile.log'
+
       obj = Guard::Shoryuken.new :logfile => logfile
       obj.send(:cmd).should include "--logfile #{logfile}"
     end
 
     it 'accepts :pidfile option' do
       logfile = 'my_pidfile.pid'
+
       obj = Guard::Shoryuken.new :logfile => logfile
       obj.send(:cmd).should include "--logfile #{logfile}"
     end
