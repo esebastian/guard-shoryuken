@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.name        = "guard-shoryuken"
   s.version     = Guard::ShoryukenVersion::STRING
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Mark Bolusmjak", "pitr", "Eduardo Sebastian"]
+  s.authors     = ["Eduardo Sebastian"]
   s.email       = ["code@tagloo.com"]
   s.homepage    = 'http://github.com/tagloo/guard-shoryuken'
   s.summary     = %q{guard gem for shoryuken}
