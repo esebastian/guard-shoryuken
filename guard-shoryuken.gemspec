@@ -11,17 +11,18 @@ Gem::Specification.new do |s|
   s.homepage    = 'http://github.com/esebastian/guard-shoryuken'
   s.summary     = %q{guard gem for shoryuken}
   s.description = %q{Guard::Shoryuken automatically starts/stops/restarts Shoryuken workers}
+  s.license     = 'Apache-2.0'
 
-  s.add_dependency 'guard', '>= 2'
-  s.add_dependency('guard-compat', '~> 1.0')
-  s.add_dependency 'shoryuken'
+  s.add_dependency 'guard', '2.12.5'
+  s.add_dependency 'guard-compat', '~> 1.0'
+  s.add_dependency 'shoryuken', '~> 1'
 
-  s.add_development_dependency 'bundler'
-  s.add_development_dependency 'rb-fsevent'
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'rspec',         '~> 2.5.0'
-  s.add_development_dependency 'guard-rspec',   '>= 0.2.0'
-  s.add_development_dependency 'guard-bundler', '>= 0.1.1'
+  s.add_development_dependency 'bundler',       '~> 1'
+  s.add_development_dependency 'rb-fsevent',    '~> 0'
+  s.add_development_dependency 'rake',          '~> 10'
+  s.add_development_dependency 'rspec',         '2.5.0'
+  s.add_development_dependency 'guard-rspec',   '~> 1.2'
+  s.add_development_dependency 'guard-bundler', '~> 2.1'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- spec/*`.split("\n")
